@@ -1,0 +1,138 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "angularLates": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/angular-lates",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": ["src/styles.scss"],
+            "scripts": [],
+            "server": "src/main.server.ts",
+            "outputMode": "server",
+            "ssr": {
+              "entry": "src/server.ts"
+            }
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ], 
+                "fileReplacements": [
+                {
+                  "replace": "src/environments/globel.scss",
+                  "with": "src/environments/demo-beta/globel.scss"
+                }
+                
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "demo-beta": { 
+              "stylePreprocessorOptions": {
+                "includePaths": [
+                  "src/environments/demo-beta/assets/"
+                ]
+              },
+               "optimization": false,
+            "extractLicenses": false,
+            "sourceMap": true,
+            "fileReplacements": [
+              {
+                "replace": "src/app/configDetails.ts",
+                "with": "src/environments/demo-beta/assets/configDetails.ts"
+              },
+              {
+                "replace": "src/app/multiLang.ts",
+                "with": "src/environments/demo-beta/assets/multiLang.ts"
+              }
+            ],
+             "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "src/environments/demo-beta/assets",
+                  "output": "/"
+                }
+              ]
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "angularLates:build:production"
+            },
+            "development": {
+              "buildTarget": "angularLates:build:development"
+            },
+            "demo-beta": {
+              "buildTarget": "angularLates:build:demo-beta"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": ["src/styles.scss"],
+            "scripts": []
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": "1d536733-57ac-4c78-b292-c8f154dd66fe"
+  }
+}
