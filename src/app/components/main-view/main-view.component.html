@@ -1,1 +1,5 @@
 <h1>i am main view</h1>
+
+@for (item of userData; track $index) {
+    <div>{{ item | json }} -- {{$index}}</div>
+  }
