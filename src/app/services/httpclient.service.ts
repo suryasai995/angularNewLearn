@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable,signal } from '@angular/core';
 import { appConfig } from '../configDetails';
 import { Observable } from 'rxjs'; 
 import { map } from 'rxjs/operators'; 
@@ -23,4 +23,17 @@ export class HttpclientService {
       })
     );
   }
+
+  private signalState = signal<any>(false);
+
+  // Getter for the signal state
+  get state() {
+    return this.signalState();
+  }
+
+  // Method to toggle the signal
+  toggleSignal(vaue:any) {
+    this.signalState.set(vaue);
+  }
+
 }
